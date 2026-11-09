@@ -20,8 +20,15 @@ WORDS = [
 ]
 
 
+@pytest.fixture(scope="session", autouse=True)
+def studio_dir(tmp_path_factory):
+    d = tmp_path_factory.mktemp("studio")
+    os.environ["REEL_STUDIO_DIR"] = str(d)
+    return d
+
+
 @pytest.fixture(scope="session")
-def project(tmp_path_factory):
+def project(tmp_path_factory, studio_dir):
     from reel import config
     name = "_test_pytest"
     p = config.PROJECTS / name

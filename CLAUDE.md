@@ -1,7 +1,10 @@
 # Reel Studio: istruzioni per Claude
 
 Progetto per montare video **verticali 9:16** (Instagram Reels, TikTok) partendo dai video grezzi dell'utente.
-L'utente è **alle prime armi con il montaggio**: parla in italiano, spiega ogni passo in modo semplice, proponi e chiedi conferma prima delle scelte creative importanti (usa le domande interattive con opzioni).
+Chi lo usa **non è tecnico e non usa il terminale**: parla in italiano semplice, non mostrare comandi, percorsi o JSON, e per ogni scelta usa le schede interattive (AskUserQuestion) con l'opzione consigliata per prima.
+**Modalità predefinita: pilota automatico** → segui la skill `reel-auto` (benvenuto, poche domande, montaggio automatico, anteprima che si apre da sola, menu dei comandi dopo ogni anteprima). Le altre skill sono i dettagli tecnici di ogni fase.
+Su Windows, se `python -m reel` dà `ModuleNotFoundError`, usa `.venv/Scripts/python -m reel`.
+I video arrivano dalla cartella del Desktop *Reel Studio → 1 - Video da montare* (`new <nome> --from-inbox`) e quelli finiti vengono copiati in *2 - Video pronti* in automatico dal `render`.
 
 ## Regole d'oro
 1. **Non modificare mai** i file in `projects/<nome>/raw/`. Tutto il montaggio sta in `projects/<nome>/edl.json`.
@@ -14,10 +17,10 @@ L'utente è **alle prime armi con il montaggio**: parla in italiano, spiega ogni
 8. Se un comando fallisce, leggi l'errore, spiega in parole semplici e proponi la soluzione.
 
 ## Flusso standard di un video
-`new` → l'utente copia i file in `raw/` → `ingest` → `transcribe` → `autocut` → (rivedi i tagli con `show`) → `captions` → testi/pop-up/zoom/SFX/musica → `preview` → correzioni → `render` → caption e hashtag del post.
+`inbox` → `new <nome> --from-inbox` (sposta i video e fa l'ingest) → `transcribe` → `autocut` → (rivedi i tagli con `show`) → `captions` → testi/pop-up/zoom/SFX/musica → `preview --open` → menu → correzioni → `render` (copia in Video pronti) → caption e hashtag del post.
 
 ## Mappa delle skill (`.claude/skills/`)
-reel-setup · reel-script · reel-ingest · reel-transcribe · reel-rough-cut · reel-captions · reel-graphics · reel-audio · reel-transitions · reel-render
+**reel-auto (pilota automatico)** · reel-setup · reel-script · reel-ingest · reel-transcribe · reel-rough-cut · reel-captions · reel-graphics · reel-audio · reel-transitions · reel-render
 
 ## Riferimenti
 - Comandi dell'utente → `COMANDI.md`

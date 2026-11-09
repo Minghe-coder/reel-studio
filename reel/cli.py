@@ -83,7 +83,61 @@ def cmd_doctor(a):
 def cmd_new(a):
     from . import project
     p = project.create(a.project)
-    print(f"Progetto creato: {p}\n  1) copia i video in {p / 'raw'}\n  2) python -m reel ingest {a.project}")
+    if a.from_inbox:
+        moved = project.take_from_inbox(p)
+        if not moved:
+            raise SystemExit(f"La cartella '{config.inbox()}' è vuota: trascina lì i video e riprova.")
+        print(f"Progetto creato: {p.name} · video presi dalla cartella del Desktop: " + ", ".join(m.name for m in moved))
+        project.ingest(p)
+    else:
+        print(f"Progetto creato: {p}\n  1) copia i video in {p / 'raw'}\n  2) python -m reel ingest {a.project}")
+
+
+def cmd_inbox(a):
+    from . import project
+    box = config.inbox()
+    files = sorted(x for x in box.iterdir() if x.suffix.lower() in project.VIDEO_EXT) if box.exists() else []
+    print(f"Cartella: {box}")
+    for f in files:
+        try:
+            info = ff.probe(f)
+            print(f"  {f.name}  ({info['duration']:.0f} s, {info.get('width')}x{info.get('height')})")
+        except ff.FFmpegError:
+            print(f"  {f.name}  (file non leggibile)")
+    if not files:
+        print("  (vuota)")
+    projects = sorted((x for x in config.PROJECTS.iterdir() if x.is_dir() and not x.name.startswith("_")),
+                      key=lambda x: x.stat().st_mtime, reverse=True)
+    print("Progetti recenti: " + (", ".join(x.name for x in projects[:8]) or "nessuno"))
+
+
+def _open_path(path: Path) -> None:
+    import os
+    import subprocess
+    if hasattr(os, "startfile"):
+        os.startfile(str(path))  # Windows: apre con il programma predefinito
+    elif sys.platform == "darwin":
+        subprocess.run(["open", str(path)], check=False)
+    else:
+        print(f"(apri a mano: {path})")
+
+
+def cmd_open(a):
+    what = a.what
+    if what == "pronti":
+        target = config.outbox()
+        target.mkdir(parents=True, exist_ok=True)
+    elif what == "da-montare":
+        target = config.inbox()
+        target.mkdir(parents=True, exist_ok=True)
+    else:
+        p = P(a.project)
+        target = {"anteprima": p / "out" / "preview.mp4", "finale": p / "out" / "final.mp4",
+                  "cartella": p}.get(what, p / "out" / what)
+    if not target.exists():
+        raise SystemExit(f"Non esiste ancora: {target}")
+    _open_path(target)
+    print(f"Aperto: {target}")
 
 
 def cmd_ingest(a):
@@ -334,6 +388,11 @@ def cmd_render(a, preview=False):
     if not (preview or a.preview):
         rep = qc.check(p, out)
         print(json.dumps(rep, indent=1, ensure_ascii=False))
+        if not a.no_deliver:
+            from . import project
+            print(f"Copiato in Video pronti: {project.deliver(p, out)}")
+    if a.open:
+        _open_path(out)
 
 
 def cmd_qc(a):
@@ -376,7 +435,13 @@ def build_parser() -> argparse.ArgumentParser:
         return x
 
     sp("doctor", cmd_doctor, "controlla l'installazione", project=False)
-    sp("new", cmd_new, "crea un nuovo progetto")
+    x = sp("new", cmd_new, "crea un nuovo progetto")
+    x.add_argument("--from-inbox", action="store_true", help="prende i video da Desktop/Reel Studio/1 - Video da montare")
+    sp("inbox", cmd_inbox, "elenca i video da montare e i progetti recenti", project=False)
+    x = sub.add_parser("open", help="apre anteprima|finale|cartella di un progetto, oppure pronti|da-montare")
+    x.add_argument("what", choices=["anteprima", "finale", "cartella", "pronti", "da-montare"])
+    x.add_argument("project", nargs="?")
+    x.set_defaults(fn=cmd_open)
     x = sp("ingest", cmd_ingest, "importa i video di raw/")
     x.add_argument("--files", nargs="*")
     x.add_argument("--normalize", action="store_true")
@@ -462,6 +527,8 @@ def build_parser() -> argparse.ArgumentParser:
         x = sp(name, lambda a, pv=prev: cmd_render(a, pv), "anteprima veloce 540p" if prev else "render finale 1080x1920 + QC")
         x.add_argument("--name")
         x.add_argument("--preview", action="store_true", help=argparse.SUPPRESS)
+        x.add_argument("--open", action="store_true", help="apre il video alla fine")
+        x.add_argument("--no-deliver", action="store_true", help="non copiare in 'Video pronti'")
     x = sp("qc", cmd_qc, "controllo qualità")
     x.add_argument("--file")
     sp("undo", cmd_undo, "annulla l'ultima modifica all'EDL")

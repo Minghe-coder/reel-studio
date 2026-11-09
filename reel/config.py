@@ -17,6 +17,44 @@ def load(name: str) -> dict:
         return yaml.safe_load(fh) or {}
 
 
+def local() -> dict:
+    """Impostazioni di questo PC (config/local.yaml, creato dall'installer, non versionato)."""
+    path = CONFIG_DIR / "local.yaml"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        return yaml.safe_load(fh) or {}
+
+
+def desktop() -> Path:
+    import os
+    home = Path(os.environ.get("USERPROFILE") or Path.home())
+    for cand in (home / "OneDrive" / "Desktop", home / "OneDrive" / "Scrivania", home / "Desktop", home / "Scrivania"):
+        if cand.is_dir():
+            return cand
+    return home
+
+
+def studio_dir() -> Path:
+    import os
+    env = os.environ.get("REEL_STUDIO_DIR")  # usato dai test per non toccare il Desktop
+    return Path(env or local().get("studio_dir") or desktop() / "Reel Studio")
+
+
+def inbox() -> Path:
+    import os
+    if os.environ.get("REEL_STUDIO_DIR"):
+        return studio_dir() / "1 - Video da montare"
+    return Path(local().get("inbox") or studio_dir() / "1 - Video da montare")
+
+
+def outbox() -> Path:
+    import os
+    if os.environ.get("REEL_STUDIO_DIR"):
+        return studio_dir() / "2 - Video pronti"
+    return Path(local().get("outbox") or studio_dir() / "2 - Video pronti")
+
+
 def export_cfg() -> dict:
     return load("export")
 

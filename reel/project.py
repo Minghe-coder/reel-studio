@@ -40,11 +40,20 @@ def create(name: str) -> Path:
     return p
 
 
-def normalize(src: Path, dst: Path, fps: int = 30) -> None:
-    """Rende il file 'montabile': frame rate costante, rotazione applicata, audio 48k.
+# HDR (iPhone "Dolby Vision"/HLG) -> SDR Rec.709: senza questo i colori escono slavati
+HDR_TO_SDR = ("zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=tonemap=hable:desat=0,"
+              "zscale=t=bt709:m=bt709:r=tv,format=yuv420p")
+
+
+def normalize(src: Path, dst: Path, fps: int = 30, hdr: bool = False) -> None:
+    """Rende il file 'montabile': frame rate costante, rotazione applicata, HDR convertito, audio 48k.
     Usa CRF 16 (qualità quasi identica) per non perdere dettaglio."""
+    vf = f"fps={fps},setsar=1"
+    if hdr and ff.has_filter("zscale"):
+        vf = HDR_TO_SDR + "," + vf
     ff.run(["ffmpeg", "-y", "-hide_banner", "-i", str(src), "-map", "0:v:0", "-map", "0:a:0?",
-            "-vf", f"fps={fps},setsar=1", "-c:v", "libx264", "-preset", "fast", "-crf", "16",
+            "-vf", vf, "-c:v", "libx264", "-preset", "fast", "-crf", "16", "-color_primaries", "bt709",
+            "-color_trc", "bt709", "-colorspace", "bt709",
             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k", "-ar", "48000",
             "-movflags", "+faststart", str(dst)])
 
@@ -71,14 +80,14 @@ def ingest(project: Path, files: list[str] | None = None, force_normalize: bool 
         if not info["has_video"]:
             print(f"  salto {path.name}: nessuna traccia video")
             continue
-        needs = force_normalize or info.get("vfr") or info.get("pix_fmt", "").endswith("10le") \
+        needs = force_normalize or info.get("vfr") or info.get("hdr") or (info.get("pix_fmt") or "").endswith("10le") \
             or abs(info.get("fps", 30) - exp["fps"]) > 0.5
         rel = path.relative_to(project).as_posix()
         if needs:
             dst = work / (path.stem + "_norm.mp4")
             if not dst.exists():
-                print(f"  normalizzo {path.name} (VFR/HDR/fps diverso)...")
-                normalize(path, dst, exp["fps"])
+                print(f"  preparo {path.name} ({'HDR iPhone -> colori standard, ' if info.get('hdr') else ''}frame rate costante)...")
+                normalize(path, dst, exp["fps"], bool(info.get("hdr")))
             info = ff.probe(dst)
             rel = dst.relative_to(project).as_posix()
         orient = "verticale" if info["height"] > info["width"] else "orizzontale" if info["width"] > info["height"] else "quadrato"
@@ -91,3 +100,25 @@ def ingest(project: Path, files: list[str] | None = None, force_normalize: bool 
     edl["segments"] = [{"src": s["id"], "in": 0.0, "out": s["duration"], "zoom": 1.0} for s in sources]
     E.save(project, edl)
     return sources
+
+
+def take_from_inbox(project: Path) -> list[Path]:
+    """Sposta i video dalla cartella del Desktop '1 - Video da montare' in raw/ del progetto."""
+    box = config.inbox()
+    files = sorted(x for x in box.iterdir() if x.is_file() and x.suffix.lower() in VIDEO_EXT) if box.exists() else []
+    moved = []
+    for f in files:
+        dst = project / "raw" / f.name
+        shutil.move(str(f), dst)
+        moved.append(dst)
+    return moved
+
+
+def deliver(project: Path, video: Path) -> Path:
+    """Copia il video finito in '2 - Video pronti' sul Desktop con un nome leggibile."""
+    box = config.outbox()
+    box.mkdir(parents=True, exist_ok=True)
+    stem = project.name if video.name == "final.mp4" else f"{project.name}_{video.stem}"
+    dst = box / f"{stem}.mp4"
+    shutil.copy2(video, dst)
+    return dst

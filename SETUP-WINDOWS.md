@@ -1,5 +1,14 @@
 # Installazione su Windows (anche Boot Camp su Mac)
 
+## ⚡ Modo facile (consigliato)
+1. Scarica il progetto (`git clone` del punto 4, oppure lo zip estratto in `Documenti\reel-studio`).
+2. Apri la cartella e fai **doppio clic su `INSTALLA.cmd`**. Installa ciò che manca, prepara Python, crea sul Desktop l'icona 🎬 **Reel Studio** e la cartella **Reel Studio** (con *1 - Video da montare*, *2 - Video pronti* e la guida illustrata).
+3. Da quel momento: doppio clic sull'icona 🎬 → si apre Claude, già pronto e aggiornato.
+
+L'installer si può rilanciare quando vuoi (per esempio dopo un aggiornamento). Sotto trovi gli stessi passi fatti a mano.
+
+## Modo manuale
+
 Tempo: circa 20 minuti. Serve una connessione internet. Fai i passi **in ordine**.
 
 ## 1. Apri PowerShell

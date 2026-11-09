@@ -5,6 +5,8 @@ Tu giri il video e dici cosa vuoi ("taglia i silenzi", "metti il titolo quando d
 Claude trascrive, taglia, aggiunge sottotitoli animati, grafiche, effetti sonori e musica, ed esporta il file pronto da pubblicare.
 
 ## Da dove partire
+**Per chi non usa il terminale:** doppio clic su `INSTALLA.cmd` (una volta sola), poi sull'icona 🎬 *Reel Studio* del Desktop. Guida illustrata: [GUIDA-FACILE.html](GUIDA-FACILE.html).
+
 1. **Installazione** → [SETUP-WINDOWS.md](SETUP-WINDOWS.md)
 2. **Materiali** (musica, effetti, font, logo) → [MATERIALI.md](MATERIALI.md)
 3. **Cosa dire a Claude** → [COMANDI.md](COMANDI.md)

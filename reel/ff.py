@@ -67,6 +67,8 @@ def probe(path: Path | str) -> dict:
                 fps=_fps(st.get("avg_frame_rate") or st.get("r_frame_rate")),
                 r_fps=_fps(st.get("r_frame_rate")),
                 pix_fmt=st.get("pix_fmt"),
+                color_transfer=st.get("color_transfer"),
+                hdr=st.get("color_transfer") in ("arib-std-b67", "smpte2084"),
             )
         elif st.get("codec_type") == "audio" and not info["has_audio"]:
             info["has_audio"] = True

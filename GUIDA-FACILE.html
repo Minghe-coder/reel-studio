@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel Studio – Guida</title>
+<style>
+  :root { --bg:#fffaf0; --card:#ffffff; --ink:#1d1b16; --muted:#6b665c; --accent:#ffb800; --accent-ink:#1d1b16; --line:#ece4d3; --say:#fff4cc; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#17150f; --card:#221f17; --ink:#f4efe3; --muted:#b3ab98; --accent:#ffc933; --accent-ink:#17150f; --line:#3a3428; --say:#3a3220; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.5 "Segoe UI", system-ui, sans-serif; }
+  main { max-width:980px; margin:0 auto; padding:28px 16px 60px; }
+  h1 { font-size:34px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 28px; }
+  h2 { font-size:22px; margin:36px 0 14px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .step { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .num { display:inline-grid; place-items:center; width:34px; height:34px; border-radius:50%; background:var(--accent); color:var(--accent-ink); font-weight:800; margin-bottom:8px; }
+  .step b { display:block; font-size:18px; margin-bottom:4px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; }
+  .card h3 { margin:0 0 10px; font-size:18px; }
+  .say { display:block; background:var(--say); border-radius:10px; padding:6px 10px; margin:6px 0; font-weight:600; }
+  .say::before { content:"💬 "; }
+  .tip { background:var(--card); border-left:5px solid var(--accent); border-radius:10px; padding:12px 16px; margin:10px 0; }
+  .ok { font-size:20px; text-align:center; background:var(--accent); color:var(--accent-ink); border-radius:16px; padding:16px; font-weight:800; margin-top:20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>🎬 Reel Studio</h1>
+  <p class="sub">Monti i tuoi reel parlando con Claude, come in una chat. Non serve sapere niente di tecnico.</p>
+
+  <h2>Come si fa, in 4 passi</h2>
+  <div class="steps">
+    <div class="step"><span class="num">1</span><b>Metti il video</b>Trascinalo nella cartella <em>1 - Video da montare</em> (qui accanto).</div>
+    <div class="step"><span class="num">2</span><b>Apri Reel Studio</b>Doppio clic sull'icona 🎬 <em>Reel Studio</em> sul Desktop.</div>
+    <div class="step"><span class="num">3</span><b>Rispondi alle schede</b>Claude ti chiede stile, titolo, musica e finale. Poi monta da solo e ti apre l'anteprima.</div>
+    <div class="step"><span class="num">4</span><b>Correggi e scarica</b>Scrivi cosa cambiare. Quando ti piace scrivi <em>"va bene così"</em>: lo trovi in <em>2 - Video pronti</em>.</div>
+  </div>
+
+  <h2>Cosa puoi scrivere (con parole tue!)</h2>
+  <div class="grid">
+    <div class="card"><h3>✂️ Tagli</h3>
+      <span class="say">togli la parte in cui dico "…"</span>
+      <span class="say">taglia di più / taglia meno</span>
+      <span class="say">accorcialo sotto i 30 secondi</span>
+      <span class="say">ho sbagliato all'inizio, tieni l'ultima volta che lo dico</span></div>
+    <div class="card"><h3>💬 Sottotitoli</h3>
+      <span class="say">sottotitoli più grandi / più in basso</span>
+      <span class="say">prova lo stile pop / clean / bold</span>
+      <span class="say">correggi "…" in "…"</span>
+      <span class="say">evidenzia la parola "…"</span></div>
+    <div class="card"><h3>🅰️ Scritte</h3>
+      <span class="say">cambia il titolo in "…"</span>
+      <span class="say">scrivi "…" quando dico "…"</span>
+      <span class="say">alla fine scrivi "Seguimi per altri consigli"</span></div>
+    <div class="card"><h3>✨ Emoji e immagini</h3>
+      <span class="say">metti 😍 quando dico "…"</span>
+      <span class="say">togli le emoji</span>
+      <span class="say">mostra la foto "…" quando parlo di …</span></div>
+    <div class="card"><h3>🔊 Musica e suoni</h3>
+      <span class="say">musica più bassa / più alta</span>
+      <span class="say">cambia musica, voglio qualcosa di più allegro</span>
+      <span class="say">togli la musica, la metto da Instagram</span>
+      <span class="say">togli gli effetti sonori</span></div>
+    <div class="card"><h3>🔍 Movimento</h3>
+      <span class="say">meno zoom / più movimento</span>
+      <span class="say">zoom quando dico "…"</span>
+      <span class="say">aggiungi una transizione quando cambio argomento</span></div>
+  </div>
+  <div class="ok">✅ "va bene così" → video finale &nbsp;·&nbsp; ↩️ "annulla" → torna indietro &nbsp;·&nbsp; ❓ "aiuto" → menu</div>
+
+  <h2>Consigli</h2>
+  <div class="tip">📱 <b>Dall'iPhone al PC:</b> usa il cavo e l'app <em>Foto</em> di Windows (Importa), oppure manda il video a te stessa su WhatsApp <b>come Documento</b>: inviato come video normale, WhatsApp lo comprime e perde qualità.</div>
+  <div class="tip">📤 <b>Dal PC all'iPhone:</b> WhatsApp Web, invialo a te stessa come Documento, poi sull'iPhone aprilo e scegli "Salva video". Oppure carica su iCloud.com → Foto.</div>
+  <div class="tip">🎥 <b>Quando giri:</b> telefono in verticale, luce davanti a te, 1 secondo di silenzio all'inizio e alla fine. Se sbagli non fermarti: ripeti la frase. Claude tiene l'ultima versione.</div>
+  <div class="tip">⏳ La prima volta la trascrizione impiega qualche minuto in più, perché scarica il "cervello" che capisce l'italiano.</div>
+</main>
+</body>
+</html>
