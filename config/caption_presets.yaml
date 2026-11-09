@@ -1,0 +1,51 @@
+# Preset sottotitoli. Coordinate su tela 1080x1920. Colori in formato #RRGGBB.
+# mode: word   = gruppo di parole, la parola pronunciata è evidenziata (karaoke)
+#       phrase = frase intera, nessuna evidenziazione parola per parola
+#       pop    = 1-2 parole alla volta con animazione "pop" (ingrandimento)
+bold:
+  mode: word
+  font: Montserrat Black
+  size: 92
+  uppercase: true
+  max_words: 3
+  max_chars: 18
+  color: "#FFFFFF"
+  active_color: "#FFD400"     # parola che stai dicendo
+  keyword_color: "#00E676"    # parole chiave (highlight_words nell'EDL)
+  outline: 7
+  outline_color: "#000000"
+  shadow: 0
+  y: 1250                     # centro verticale dei sottotitoli
+  box: false
+clean:
+  mode: phrase
+  font: Montserrat SemiBold
+  size: 60
+  uppercase: false
+  max_words: 7
+  max_chars: 34
+  color: "#FFFFFF"
+  active_color: "#FFFFFF"
+  keyword_color: "#FFD400"
+  outline: 0
+  outline_color: "#000000"
+  shadow: 0
+  y: 1300
+  box: true                   # riquadro semitrasparente dietro al testo
+  box_color: "#000000"
+  box_alpha: 0.55
+pop:
+  mode: pop
+  font: Montserrat Black
+  size: 118
+  uppercase: true
+  max_words: 2
+  max_chars: 14
+  color: "#FFFFFF"
+  active_color: "#FFFFFF"
+  keyword_color: "#FF3D71"
+  outline: 8
+  outline_color: "#000000"
+  shadow: 3
+  y: 1200
+  box: false

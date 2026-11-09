@@ -1,0 +1,16 @@
+# Identità visiva: modifica con i tuoi colori/font
+primary_color: "#FFD400"
+secondary_color: "#00E676"
+accent_color: "#FF3D71"
+text_color: "#FFFFFF"
+font_title: Montserrat Black
+font_body: Montserrat SemiBold
+logo: null                # es. assets/overlays/logo.png
+progress_bar_color: "#FFD400"
+# Stili dei testi a schermo (hook, titoli, CTA, etichette)
+text_styles:
+  hook:   {font: Montserrat Black, size: 96, color: "#FFFFFF", box: false, outline: 8, y: 520, uppercase: true, anim: pop}
+  title:  {font: Montserrat Black, size: 80, color: "#FFD400", box: false, outline: 7, y: 420, uppercase: true, anim: pop}
+  cta:    {font: Montserrat Black, size: 78, color: "#000000", box: true, box_color: "#FFD400", box_alpha: 1.0, outline: 0, y: 900, uppercase: true, anim: pop}
+  label:  {font: Montserrat SemiBold, size: 54, color: "#FFFFFF", box: true, box_color: "#000000", box_alpha: 0.6, outline: 0, y: 380, uppercase: false, anim: fade}
+  number: {font: Montserrat Black, size: 220, color: "#FFD400", box: false, outline: 10, y: 560, uppercase: false, anim: pop}

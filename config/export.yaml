@@ -1,0 +1,25 @@
+# Specifiche di export per Instagram Reels / TikTok (master unico 9:16)
+width: 1080
+height: 1920
+fps: 30
+video_codec: libx264
+crf: 18            # qualità (più basso = migliore). 18 = quasi trasparente
+preset: medium     # velocità encoder: veryfast | fast | medium | slow
+maxrate: 15M       # tetto bitrate (le piattaforme ricomprimono comunque)
+bufsize: 30M
+audio_codec: aac
+audio_bitrate: 192k
+sample_rate: 48000
+loudness_lufs: -14.0   # loudness integrata target
+true_peak_db: -1.5     # tetto true-peak
+preview:
+  width: 540
+  height: 960
+  crf: 28
+  preset: veryfast
+# Zone sicure (pixel su tela 1080x1920): non mettere testo importante qui
+safe_zone:
+  top: 250        # barra superiore / nome account
+  bottom: 400     # caption del post, musica, pulsanti
+  right: 150      # colonna like/commenti/condividi
+  left: 60

@@ -1,0 +1,10 @@
+file,categoria,durata_s,bpm,energia_1_5,licenza,fonte,note
+assets/sfx/boom/boom_1.wav,boom,0.9,,,generato,,
+assets/sfx/click/click_1.wav,click,0.02,,,generato,,
+assets/sfx/ding/ding_1.wav,ding,0.9,,,generato,,
+assets/sfx/glitch/glitch_1.wav,glitch,0.25,,,generato,,
+assets/sfx/pop/pop_1.wav,pop,0.06,,,generato,,
+assets/sfx/pop/pop_2.wav,pop,0.07,,,generato,,
+assets/sfx/typing/typing_1.wav,typing,1.2,,,generato,,
+assets/sfx/whoosh/whoosh_1.wav,whoosh,0.45,,,generato,,
+assets/sfx/whoosh/whoosh_2.wav,whoosh,0.3,,,generato,,

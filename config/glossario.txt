@@ -1,0 +1,5 @@
+# Una parola/nome per riga: aiuta la trascrizione a scrivere bene nomi propri e termini tecnici.
+# Esempio:
+# ChatGPT
+# Instagram
+# TikTok
